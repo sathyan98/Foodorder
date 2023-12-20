@@ -1,0 +1,18 @@
+.form-child {
+     display: flex;
+     flex-direction: row;
+     justify-content: center;
+     margin-top: 50px;
+}
+
+.form-child > label {
+     display : block;
+     margin-right: 10px;
+     
+
+}
+
+.form-child > input {
+    display : block;
+    width: 300px;
+}
