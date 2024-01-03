@@ -1,16 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import Foodcard from './foodcard'
 import {Card,Container,Row,Col,Button} from 'reactstrap';
+import {Link} from 'react-router-dom';
 
+const APIkey = 'aaaa89d29126447985bd982356fe5384'
 const Food = () => {
   const [restaurants, setRes] = useState([]);
+
+//  GET https://api.spoonacular.com/food/menuItems/search?query=burger&aoiKey=aaaa89d29126447985bd982356fe5384
   const fetchData = async() => {
-     const data =  await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING")
-     const json = await data.json();
-     console.log(json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-     let resData = json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-     setRes(resData);
-    
+    // const getFood = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=aaaa89d29126447985bd982356fe5384`);
+    const getFood = await fetch(`https://api.spoonacular.com/food/menuItems/search?query=burger&apiKey=aaaa89d29126447985bd982356fe5384`);
+
+    const food = await(getFood.json())
+
+    console.log('food',food);
+    setRes(food.menuItems)
   }  
      
   useEffect(() => {
@@ -22,12 +27,10 @@ const Food = () => {
          cleanup = false;
      }
   },[])  
-  
+  console.log('restaurants',restaurants)
   return(
        <div style = {{marginTop : '50px'}}>
-           <Container>
-
-
+           <Container>        
             <Row>
               
             {restaurants && restaurants.length > 0 && restaurants.map((restaurant,index) => {
@@ -35,7 +38,9 @@ const Food = () => {
                    console.log('res',restaurant);
                     return (
                     <Col lg = {3}>
-                      <Foodcard key = {restaurant.info.id} restaurants = {restaurant.info}/>
+                      <Link key = {restaurant.id} to = {"/" + restaurant.id} >
+                      <Foodcard key = {restaurant.id} restaurants = {restaurant}/>
+                      </Link>
                     </Col>
                     )           
                })
